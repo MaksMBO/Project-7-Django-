@@ -12,8 +12,10 @@ class Home(View):
     @staticmethod
     def get(request):
         all_flower_dict = get_all_flowers(limit=8, available=True)
+    
         context = {
             "all_flower_dict": all_flower_dict,
+            "count": request.user.cart_count(),
         }
         return render(request, 'home/main.html', context)
 

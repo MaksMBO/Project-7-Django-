@@ -3,67 +3,87 @@
 {% load static %}
 
 {% block header %}
-    {% include './../header.html' %}
+{% include './../header.html' %}
 {% endblock %}
 
 {% block content %}
-    <section class="ftco-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 mb-5 ftco-animate">
-                    <a href="{{ flower_dict.image.url }}" class="image-popup"><img
-                            src="{{ flower_dict.image.url }}" class="img-fluid" alt="Colorlib Template"></a>
-                </div>
-                <div class="col-lg-6 product-details pl-md-5 ftco-animate">
-                    <h3>{{ flower_dict.name }}</h3>
-                    <p class="price"><span>{{ flower_dict.price }} {{ flower_dict.currency }}</span></p>
-                    <p>{{ flower_dict.description }}</p>
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-5 ftco-animate">
+                <a href="{{ flower_dict.image.url }}" class="image-popup"><img src="{{ flower_dict.image.url }}"
+                        class="img-fluid" alt="Colorlib Template"></a>
+            </div>
+            <div class="col-lg-6 product-details pl-md-5 ftco-animate">
+                <h3>{{ flower_dict.name }}</h3>
+                <p class="price"><span>{{ flower_dict.price }} {{ flower_dict.currency }}</span></p>
+                <p>{{ flower_dict.description }}</p>
 
-                    <p>
-                        <a {% if flower_dict.available %}href="#"{% endif %}
-                           class="btn {% if flower_dict.available %} btn-black {% else %} btn-black-2 {% endif %} py-3 px-5"
-                                {% if not flower_dict.available %} disabled {% endif %}>
-                            Додати в кошик
-                        </a>
+                <p>
+                <form method="post" action="{% url 'add_to_cart' flower_id=flower_dict.id %}" class="subscribe-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="flower_id" value="{{ flower_dict.id }}">
+                    <p id="addToCartBtn"
+                        class="btn {% if flower_dict.available %} btn-black {% else %} btn-black-2 {% endif %} py-3 px-5"
+                        {% if not flower_dict.available %} disabled {% endif %}>
+                        Додати в кошик
                     </p>
-                </div>
+                </form>
+
+                </p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var addToCartBtn = document.getElementById('addToCartBtn');
+
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', function () {
+                var form = addToCartBtn.closest('form');
+                form.submit();
+            });
+        }
+    });
+</script>
+
+
 {% endblock %}
 
 
 {% block footer %}
-    {% include './../footer.html' %}
+{% include './../footer.html' %}
 {% endblock %}
 
 {% block postfooter %}
-    <script>
-        $(document).ready(function () {
+<script>
+    $(document).ready(function () {
 
-            var quantitiy = 0;
-            $('.quantity-right-plus').click(function (e) {
+        var quantitiy = 0;
+        $('.quantity-right-plus').click(function (e) {
 
-                e.preventDefault();
-                var quantity = parseInt($('#quantity').val());
+            e.preventDefault();
+            var quantity = parseInt($('#quantity').val());
 
-                $('#quantity').val(quantity + 1);
-            });
-
-            $('.quantity-left-minus').click(function (e) {
-
-                e.preventDefault();
-                var quantity = parseInt($('#quantity').val());
-
-                if (quantity > 0) {
-                    $('#quantity').val(quantity - 1);
-                }
-            });
-
+            $('#quantity').val(quantity + 1);
         });
-    </script>
+
+        $('.quantity-left-minus').click(function (e) {
+
+            e.preventDefault();
+            var quantity = parseInt($('#quantity').val());
+
+            if (quantity > 0) {
+                $('#quantity').val(quantity - 1);
+            }
+        });
+
+    });
+</script>
 {% endblock %}
 
 {% block js %}
-    {% include './../js.html' %}
+{% include './../js.html' %}
 {% endblock %}

@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import Flower
+from .models import Flower, Currency
 
 
 class FlowerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'get_img', 'name', 'price', 'available',)
-    list_display_links = ('name', 'price', 'get_img', 'available',)
+    list_display = ('id', 'get_img', 'name', 'price', 'currency', 'available',)
+    list_display_links = ('name', 'price', 'get_img', 'currency', 'available',)
     search_fields = ('name', 'price',)
 
     def get_img(self, obj):
@@ -21,3 +21,4 @@ class FlowerAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Flower, FlowerAdmin)
+admin.site.register(Currency)

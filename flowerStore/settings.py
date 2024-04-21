@@ -23,7 +23,12 @@ INSTALLED_APPS = [
     "flower.apps.FlowerConfig",
     "catalog.apps.CatalogConfig",
     "home.apps.HomeConfig",
+    "users.apps.UsersConfig",
 ]
+
+AUTH_USER_MODEL = "users.CustomUser"
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
