@@ -3,14 +3,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from users.views import AddToCartView
+# from users.views import AddToCartView
 
 urlpatterns = [
-    path('', include('home.urls')),
+    # path('', include('home.urls')),
     path('admin/', admin.site.urls),
-    path('catalog/flower/', include('flower.urls')),
-    path('catalog/', include('catalog.urls')),
-    path('users/', include('users.urls')),
+    path('api/products/', include('flower.urls')),
+    # path('catalog/', include('catalog.urls')),
+    path('api/users/', include('users.urls')),
 ]
 
 if settings.DEBUG:

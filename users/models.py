@@ -6,6 +6,8 @@ class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set')
+        if not password:
+            raise ValueError('A password must be set')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -22,7 +24,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    cart = models.ManyToManyField('flower.Flower', related_name='users_with_this_flower', blank=True)
 
     objects = CustomUserManager()
 
@@ -31,9 +32,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-    
-    def cart_count(self):
-        return self.cart.count()
-
-    def cart_items(self):
-        return self.cart.all()

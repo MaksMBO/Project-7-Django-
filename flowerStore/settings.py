@@ -1,3 +1,4 @@
+from datetime import timedelta
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -21,9 +22,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     "flower.apps.FlowerConfig",
-    "catalog.apps.CatalogConfig",
-    "home.apps.HomeConfig",
     "users.apps.UsersConfig",
+
+    'rest_framework_simplejwt',
 ]
 
 AUTH_USER_MODEL = "users.CustomUser"
@@ -81,6 +82,20 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+}
+
+
 
 LANGUAGE_CODE = 'en-us'
 

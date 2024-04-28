@@ -1,8 +1,4 @@
 from django.db import models
-from django.db.models.signals import post_migrate
-from django.dispatch import receiver
-from faker import Faker
-
 
 from services.image_info import handle_image
 
@@ -14,39 +10,21 @@ class Currency(models.Model):
         return self.code
 
 
-@receiver(post_migrate)
-def create_currencies(sender, **kwargs):
-    Currency.objects.get_or_create(code='UAH')
-    Currency.objects.get_or_create(code='USD')
-    Currency.objects.get_or_create(code='EUR')
+class ProductCategory(models.Model):
+    category_name = models.CharField(max_length=100)
 
-    faker = Faker()
-
-    for i in range(1, 10):  
-        name = faker.name()
-        description = faker.text()
-        price = faker.pydecimal(left_digits=3, right_digits=2, positive=True)
-        currency = Currency.objects.get(code=faker.random_element(elements=['UAH', 'USD', 'EUR']))
-        image_path = f'flowers/flower_00{i}.webp'
-        available = faker.boolean()
-
-        Flower.objects.create(
-            name=name,
-            description=description,
-            price=price,
-            currency=currency,
-            image=image_path,
-            available=available
-        )
+    def __str__(self):
+        return self.category_name
 
 
-class Flower(models.Model):
+class Product(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='flowers/')
+    image = models.ImageField(upload_to='product/')
     available = models.BooleanField(default=True)
+    category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

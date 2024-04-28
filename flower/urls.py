@@ -1,14 +1,13 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import CategoryViewSet, ProductViewSet, CurrencyViewSet
+
+router = DefaultRouter()
+router.register(r'currencies', CurrencyViewSet)
+router.register(r'products', ProductViewSet)
+router.register(r'categories', CategoryViewSet)
+
 
 urlpatterns = [
-    path('<int:id>/', views.FlowerView.as_view(), name='about_flower'),
+    path('', include(router.urls)),
 ]
-
-# from django.urls import path
-# from .views import FlowerListCreate, FlowerRetrieveUpdateDestroy
-
-# urlpatterns = [
-#     path('flowers/', FlowerListCreate.as_view(), name='flower-list-create'),
-#     path('flowers/<int:pk>/', FlowerRetrieveUpdateDestroy.as_view(), name='flower-detail'),
-# ]
